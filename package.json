@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "sync:repo": "bash ./scripts/sync_repo.sh"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.10.1",

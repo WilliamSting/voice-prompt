@@ -133,6 +133,58 @@ cargo check --manifest-path src-tauri/Cargo.toml
 python3 -m py_compile backend/process_voice_prompt.py
 ```
 
+## 同步到 GitHub
+
+这个项目已经内置了一条同步脚本，目标是把“本地改完 -> 检查 -> 提交 -> 推送”收敛成一条命令。
+
+### 一次性准备
+
+1. 先在 GitHub 网页上创建一个空仓库
+2. 拿到仓库地址，例如：
+
+```text
+https://github.com/<your-name>/voice-prompt-ide.git
+```
+
+3. 在本机完成一次 GitHub 认证
+
+如果你使用 GitHub Desktop，可以直接登录 GitHub Desktop，然后它会帮你处理后续推送认证。
+
+如果你使用命令行，可以配置带权限的 Personal Access Token。
+
+### 一键同步
+
+```bash
+npm run sync:repo -- "feat: update prompt ide"
+```
+
+第一次同步时，如果本地还没有 `origin`，可以把仓库地址作为第二个参数传入：
+
+```bash
+npm run sync:repo -- "feat: first open source publish" "https://github.com/<your-name>/voice-prompt-ide.git"
+```
+
+这个脚本会自动执行：
+
+- 检查是否存在 `origin`
+- 检查明显的敏感文件名
+- 执行 `build`
+- 执行 `lint`
+- 执行 `cargo check`
+- 执行 Python 语法检查
+- 自动提交
+- 自动推送当前分支
+
+### 说明
+
+同步脚本的目标是降低发布摩擦，不是替代你对隐私的最后确认。
+
+本项目在开源叙事上应始终强调：
+
+- macOS 或搜狗输入法都可以做语音转文字
+- 这个项目真正的价值不是 STT
+- 重点是结构化 PromptSchema、局部控制、语音驱动编辑和持续迭代
+
 ## 目录结构
 
 ```text
