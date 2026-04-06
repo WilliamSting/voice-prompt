@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react'
 import { CopyIcon, HistoryIcon, InsertIcon, LockClosedIcon, LockOpenIcon, SettingsIcon, SparklesIcon, TrashIcon } from './Icons'
 import { StatusDot } from './StatusDot'
 import { WaveformPlaceholder } from './WaveformPlaceholder'
-import { connectionLabel, promptFieldMeta, statusLabel, statusTone } from '../lib/utils'
+import { connectionLabel, formatTimestamp, promptFieldMeta, statusLabel, statusTone } from '../lib/utils'
 import { templateOptions } from '../data/mock'
 import type { PromptFieldName, PromptMode, SessionState, ViewId } from '../lib/types'
 
@@ -23,6 +23,8 @@ interface MainPanelViewProps {
   onCopy: () => void
   onInsert: () => void
   onResetSchema: () => void
+  onSaveVersion: () => void
+  onRestoreVersion: (versionId: string) => void
 }
 
 export function MainPanelView({
@@ -42,6 +44,8 @@ export function MainPanelView({
   onCopy,
   onInsert,
   onResetSchema,
+  onSaveVersion,
+  onRestoreVersion,
 }: MainPanelViewProps) {
   const transcriptRef = useRef<HTMLTextAreaElement | null>(null)
 
@@ -132,6 +136,13 @@ export function MainPanelView({
                 </label>
               </div>
 
+              {session.lastVoiceCommand ? (
+                <div className="rounded-2xl border border-success/20 bg-success/5 px-4 py-3">
+                  <p className="text-sm font-medium text-success">语音修订已应用</p>
+                  <p className="mt-1 text-xs leading-5 text-success/90">{session.lastVoiceCommand}</p>
+                </div>
+              ) : null}
+
               <WaveformPlaceholder status={session.status} />
 
               <textarea
@@ -161,6 +172,47 @@ export function MainPanelView({
             </div>
 
             <div className="space-y-4 p-4">
+              <div className="sub-panel space-y-3 px-4 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-ink-light dark:text-ink-dark">版本流</p>
+                    <p className="mt-1 text-xs text-mist-light dark:text-mist-dark">
+                      每次优化、重置或语音修订都会生成一个可回退快照。
+                    </p>
+                  </div>
+                  <button className="chip" onClick={onSaveVersion}>
+                    保存版本
+                  </button>
+                </div>
+                <div className="grid gap-2">
+                  {session.versions.length ? (
+                    session.versions.map((version) => (
+                      <button
+                        key={version.id}
+                        className={`rounded-2xl border px-3 py-3 text-left transition ${
+                          session.selectedVersionId === version.id
+                            ? 'border-black/10 bg-black/[0.04] dark:border-white/10 dark:bg-white/10'
+                            : 'border-stroke-light bg-white/60 hover:bg-white dark:border-stroke-dark dark:bg-white/5 dark:hover:bg-white/10'
+                        }`}
+                        onClick={() => onRestoreVersion(version.id)}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-sm font-medium text-ink-light dark:text-ink-dark">{version.label}</p>
+                          <span className="text-[11px] text-mist-light dark:text-mist-dark">
+                            {formatTimestamp(version.createdAt)}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs leading-5 text-mist-light dark:text-mist-dark">{version.summary}</p>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-stroke-light px-3 py-4 text-xs text-mist-light dark:border-stroke-dark dark:text-mist-dark">
+                      还没有版本快照。先优化一次，或者手动保存一个版本。
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {promptFieldMeta.map((field) => {
                 const locked = session.fieldLocks[field.key]
                 return (
@@ -208,6 +260,9 @@ export function MainPanelView({
                 </button>
                 <button className="button-ghost" onClick={onResetSchema}>
                   重置结构
+                </button>
+                <button className="button-ghost" onClick={onSaveVersion}>
+                  保存版本
                 </button>
               </div>
             </div>

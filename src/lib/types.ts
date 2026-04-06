@@ -30,6 +30,25 @@ export interface TemplateOption {
   description: string
 }
 
+export type PromptVersionSource =
+  | 'seed'
+  | 'optimize_all'
+  | 'optimize_field'
+  | 'voice_command'
+  | 'manual_snapshot'
+  | 'reset'
+  | 'restore'
+
+export interface PromptVersion {
+  id: string
+  createdAt: string
+  label: string
+  source: PromptVersionSource
+  transcript: string
+  schema: PromptSchema
+  summary: string
+}
+
 export interface SettingsState {
   shortcut: string
   recordingDuration: number
@@ -65,6 +84,9 @@ export interface SessionState {
   fieldLocks: PromptFieldLocks
   revisionMode: boolean
   recordingContext: 'fresh' | 'supplement'
+  versions: PromptVersion[]
+  selectedVersionId?: string
+  lastVoiceCommand?: string
   errorMessage?: string
 }
 

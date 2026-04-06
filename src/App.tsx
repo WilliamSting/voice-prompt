@@ -191,6 +191,12 @@ function App() {
             onResetSchema={() => {
               machine.resetSchema()
             }}
+            onSaveVersion={() => {
+              machine.saveVersionSnapshot()
+            }}
+            onRestoreVersion={(versionId) => {
+              machine.restoreVersion(versionId)
+            }}
           />
         ) : null}
 

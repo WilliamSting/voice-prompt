@@ -1,5 +1,15 @@
 import type { PromptRecord, SessionState, SettingsState, TemplateOption } from '../lib/types'
-import { createDefaultFieldLocks, transcriptToSchema, schemaToText } from '../lib/utils'
+import { createDefaultFieldLocks, createPromptVersion, transcriptToSchema, schemaToText } from '../lib/utils'
+
+const initialTranscript =
+  '把这个菜单栏工具的前端界面做出来，先做 UI，不接真实后端，但是要把状态和接口先预留好。'
+const initialSchema = transcriptToSchema(initialTranscript, 'codex')
+const seedVersion = createPromptVersion({
+  label: '初始草稿',
+  source: 'seed',
+  transcript: initialTranscript,
+  schema: initialSchema,
+})
 
 export const templateOptions: TemplateOption[] = [
   { id: 'general', label: '通用', description: '整理为通用 AI 指令格式' },
@@ -16,13 +26,11 @@ export const initialSession: SessionState = {
   countdown: 0,
   revisionMode: false,
   recordingContext: 'fresh',
-  transcript:
-    '把这个菜单栏工具的前端界面做出来，先做 UI，不接真实后端，但是要把状态和接口先预留好。',
-  schema: transcriptToSchema(
-    '把这个菜单栏工具的前端界面做出来，先做 UI，不接真实后端，但是要把状态和接口先预留好。',
-    'codex',
-  ),
+  transcript: initialTranscript,
+  schema: initialSchema,
   fieldLocks: createDefaultFieldLocks(),
+  versions: [seedVersion],
+  selectedVersionId: seedVersion.id,
 }
 
 export const mockHistory: PromptRecord[] = [
