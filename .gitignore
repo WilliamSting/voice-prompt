@@ -14,6 +14,7 @@ dist-ssr
 .env.*
 src-tauri/target
 src-tauri/gen
+backend/record_audio
 *.db
 *.sqlite
 *.local
