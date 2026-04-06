@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    font-family: "SF Pro Text", system-ui, sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(255, 255, 255, 0.7), transparent 36%),
+      linear-gradient(180deg, #f7f7f8 0%, #eceef1 100%);
+  }
+
+  .dark :root,
+  :root.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply min-h-full bg-shell-light text-ink-light antialiased dark:bg-shell-dark dark:text-ink-dark;
+  }
+
+  body {
+    @apply min-h-screen bg-transparent;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  * {
+    @apply border-stroke-light dark:border-stroke-dark;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-[28px] border shadow-panel backdrop-blur-xl dark:shadow-panelDark;
+    border-color: rgba(23, 23, 26, 0.08);
+    background: rgba(255, 255, 255, 0.68);
+  }
+
+  .sub-panel {
+    @apply rounded-[22px] border backdrop-blur-lg;
+    border-color: rgba(23, 23, 26, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .hairline {
+    @apply border-b;
+    border-color: rgba(23, 23, 26, 0.08);
+  }
+
+  .mac-input {
+    @apply w-full rounded-2xl border px-4 py-3 text-sm text-ink-light outline-none transition placeholder:text-mist-light focus:ring-2 dark:text-ink-dark dark:placeholder:text-mist-dark;
+    border-color: rgba(23, 23, 26, 0.08);
+    background: rgba(255, 255, 255, 0.8);
+    --tw-ring-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium text-mist-light transition dark:text-mist-dark;
+    border-color: rgba(23, 23, 26, 0.08);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center rounded-2xl bg-ink-light px-4 py-2.5 text-sm font-medium text-white transition dark:bg-white dark:text-black;
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center rounded-2xl border px-4 py-2.5 text-sm font-medium text-ink-light transition dark:text-ink-dark;
+    border-color: rgba(23, 23, 26, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .button-ghost {
+    @apply inline-flex items-center justify-center rounded-2xl px-3 py-2 text-sm font-medium text-mist-light transition dark:text-mist-dark dark:hover:text-ink-dark;
+  }
+
+  .dark .glass-panel {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(24, 25, 29, 0.72);
+  }
+
+  .dark .sub-panel {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .dark .hairline {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .mac-input {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    --tw-ring-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dark .chip {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .dark .button-secondary {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .button-primary:hover {
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  .dark .button-primary:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .chip:hover,
+  .button-secondary:hover {
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .button-ghost:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .chip:hover,
+  .dark .button-secondary:hover,
+  .dark .button-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
